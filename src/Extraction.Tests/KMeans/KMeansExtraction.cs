@@ -10,17 +10,16 @@ namespace Extraction.Tests.KMeans
     public class KMeansExtractionTest
     {
         [Test]
-        public void GivenIPassNullOrEmptyImageFile_WhenICalledKMeansExtraction_ThenShouldThrowsNullReferenceException()
+        public void GivenIPassNullOrEmptyImageFile_WhenICreateKMeansExtractionInstance_ThenShouldThrowsNullReferenceException()
         {
             // Given
             var seed = 1;
             var imageFile = string.Empty;
 
             // When
-            var kMeansExtraction = new KMeansExtraction(imageFile, seed);
 
             // Then
-            Assert.Throws(typeof(NullReferenceException), () => kMeansExtraction.Run());
+            Assert.Throws(typeof(NullReferenceException), () => new KMeansExtraction(imageFile, seed));
         }
 
         [Test]

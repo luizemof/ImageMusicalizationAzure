@@ -8,27 +8,41 @@ namespace Extraction.KMeans
 {
     public class KMeansExtraction
     {
-        private readonly string ImageFile;
+        private readonly Bitmap ImageBitmap;
         private readonly int Seed;
 
         public KMeansExtraction(string imageFile, int seed)
         {
-            ImageFile = imageFile;
+            ImageBitmap = !string.IsNullOrWhiteSpace(imageFile) ? new Bitmap(Image.FromFile(imageFile)) : throw new NullReferenceException(nameof(imageFile));
             Seed = seed;
         }
 
         public KMeansExtractionResult Run()
         {
-            if (string.IsNullOrWhiteSpace(ImageFile))
-                throw new NullReferenceException(nameof(ImageFile));
+            var centers = FindCenters();
 
-            var image = Image.FromFile(ImageFile);
-            var bitMap = new Bitmap(Image.FromFile(ImageFile));
-            Console.Write(bitMap.GetPixel(12, 12));
+            return new KMeansExtractionResult(centers);
+        }
 
-            var kMeansExtractionResult = new KMeansExtractionResult(null);
+        private IEnumerable<Point> FindCenters()
+        {
+            var centers = FindInitialCenters();
 
-            return kMeansExtractionResult;
+            return centers;
+        }
+
+        private IEnumerable<Point> FindInitialCenters()
+        { 
+            var randomPoint = new Random();
+            var points = new HashSet<Point>();
+            while(points.Count < Seed)
+            {
+                int xPoint = randomPoint.Next(ImageBitmap.Width);
+                int yPoint = randomPoint.Next(ImageBitmap.Height);
+                var point = new Point(xPoint, yPoint);
+                points.Add(point);
+            }
+            return points;
         }
     }
 }
