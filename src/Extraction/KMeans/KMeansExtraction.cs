@@ -10,6 +10,8 @@ namespace Extraction.KMeans
     {
         private readonly Bitmap ImageBitmap;
         private readonly int Seed;
+        
+        private const int Threshold = 50;
 
         public KMeansExtraction(string imageFile, int seed)
         {
@@ -27,8 +29,25 @@ namespace Extraction.KMeans
         private IEnumerable<Point> FindCenters()
         {
             var centers = FindInitialCenters();
-
+            for (int i = 0; i < Threshold; i++)
+            {
+                centers = FindNewCenters(centers);
+            }
+            
             return centers;
+        }
+
+        private IEnumerable<Point> FindNewCenters(IEnumerable<Point> centers)
+        {
+            IEnumerable<Point> newCenters = new HashSet<Point>();
+            var groups = GetGroups(centers);
+            
+            return newCenters;
+        }
+
+        private Dictionary<Point, IEnumerable<Point>> GetGroups(IEnumerable<Point> centers)
+        {
+            return null;
         }
 
         private IEnumerable<Point> FindInitialCenters()
