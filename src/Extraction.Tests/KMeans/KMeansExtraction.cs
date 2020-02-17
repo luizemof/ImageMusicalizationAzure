@@ -23,10 +23,10 @@ namespace Extraction.Tests.KMeans
         }
 
         [Test]
-        public void GivenIHaveValidImageFile_And_OneSeed_WhenIRunKMeansExtraction_ThenSouldReturnKMeansExtractionResult()
+        public void GivenIHaveAValidImage_AndSevenSeed_WhenIRunKMeansExtraction_ThenSouldRetrunSevenCenters()
         {
             // Given
-            var seed = 1;
+            var seed = 7;
             var imageFile = Constants.ImageFile;
 
             // When
@@ -36,7 +36,7 @@ namespace Extraction.Tests.KMeans
             // Then
             Assert.IsNotNull(kMeansExtractionResult);
             Assert.IsNotNull(kMeansExtractionResult.Centers);
-            Assert.AreEqual(expected: 1, kMeansExtractionResult.Centers.Count());
+            Assert.AreEqual(expected: 7, actual: kMeansExtractionResult.Centers.Count());
         }
     }
 }
