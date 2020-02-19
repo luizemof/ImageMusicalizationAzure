@@ -1,8 +1,6 @@
 using NUnit.Framework;
 using Extraction.KMeans;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Extraction.Tests.KMeans
@@ -26,7 +24,7 @@ namespace Extraction.Tests.KMeans
         public void GivenIHaveAValidImage_AndSevenSeed_WhenIRunKMeansExtraction_ThenSouldRetrunSevenCenters()
         {
             // Given
-            var seed = 7;
+            var seed = 8;
             var imageFile = Constants.ImageFile;
 
             // When
@@ -36,7 +34,7 @@ namespace Extraction.Tests.KMeans
             // Then
             Assert.IsNotNull(kMeansExtractionResult);
             Assert.IsNotNull(kMeansExtractionResult.Centers);
-            Assert.AreEqual(expected: 7, actual: kMeansExtractionResult.Centers.Count());
+            Assert.AreEqual(expected: 8, actual: kMeansExtractionResult.Centers.Count());
         }
     }
 }

@@ -1,23 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Models.Extraction.KMeans;
+using SkiaSharp;
+using System.IO;
+using System.Drawing;
 
 namespace Extraction.KMeans
 {
-    public class KMeansExtraction
+    public class KMeansExtraction : IDisposable
     {
-        private readonly Bitmap ImageBitmap;
+        private readonly SKBitmap ImageBitmap;
         private readonly int Seed;
-
         private const int Threshold = 50;
 
         public KMeansExtraction(string imageFile, int seed)
         {
-            ImageBitmap = !string.IsNullOrWhiteSpace(imageFile) ? new Bitmap(Image.FromFile(imageFile)) : throw new NullReferenceException(nameof(imageFile));
+            ImageBitmap = !string.IsNullOrWhiteSpace(imageFile) ? GetImageBitmap(imageFile) : throw new NullReferenceException(nameof(imageFile));
             Seed = seed;
+        }
+
+        private SKBitmap GetImageBitmap(string imageFile)
+        {
+            SKBitmap sKBitmap;
+            using(var imageFileStream = File.OpenRead(imageFile))
+            using(var inputStream = new SKManagedStream(imageFileStream))
+            {
+                sKBitmap = SKBitmap.Decode(inputStream);
+            }
+
+            return sKBitmap;
         }
 
         public KMeansExtractionResult Run()
@@ -64,11 +77,11 @@ namespace Extraction.KMeans
             var totalPoints = points.Count();
             foreach (var possibleCenter in points)
             {
-                double distance = 0;
-                Color pixelPossibleCenter = ImageBitmap.GetPixel(possibleCenter.X, possibleCenter.Y);
+                var distance = 0d;
+                var pixelPossibleCenter = ImageBitmap.GetPixel(possibleCenter.X, possibleCenter.Y);
                 foreach (var item in points)
                 {
-                    Color pixelItem = ImageBitmap.GetPixel(item.X, item.Y);
+                    var pixelItem = ImageBitmap.GetPixel(item.X, item.Y);
                     distance += CalculateDistance(pixelPossibleCenter, pixelItem);
                 }
 
@@ -100,7 +113,7 @@ namespace Extraction.KMeans
             return groups;
         }
 
-        private Point GetClosestCenterPoint(IEnumerable<Point> centers, Color pixel)
+        private Point GetClosestCenterPoint(IEnumerable<Point> centers, SKColor pixel)
         {
             Point closestPoint = Point.Empty;
             double closestDistance = double.MaxValue;
@@ -118,11 +131,11 @@ namespace Extraction.KMeans
             return closestPoint;
         }
 
-        private double CalculateDistance(Color pixelA, Color pixelB)
+        private double CalculateDistance(SKColor pixelA, SKColor pixelB)
         {
-            double distanceR = Convert.ToDouble(pixelA.R) - Convert.ToDouble(pixelB.R);
-            double distanceG = Convert.ToDouble(pixelA.G) - Convert.ToDouble(pixelB.G);
-            double distanceB = Convert.ToDouble(pixelA.B) - Convert.ToDouble(pixelB.B);
+            double distanceR = Convert.ToDouble(pixelA.Red) - Convert.ToDouble(pixelB.Red);
+            double distanceG = Convert.ToDouble(pixelA.Green) - Convert.ToDouble(pixelB.Green);
+            double distanceB = Convert.ToDouble(pixelA.Blue) - Convert.ToDouble(pixelB.Blue);
 
             return Math.Sqrt(Math.Pow(distanceR, 2) + Math.Pow(distanceG, 2) + Math.Pow(distanceB, 2));
         }
@@ -139,6 +152,11 @@ namespace Extraction.KMeans
                 points.Add(point);
             }
             return points;
+        }
+
+        public void Dispose()
+        {
+            ImageBitmap.Dispose();
         }
     }
 }
