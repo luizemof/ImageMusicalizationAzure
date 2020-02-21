@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Models.Extraction.KMeans;
 using SkiaSharp;
-using System.IO;
 using System.Drawing;
 
 namespace Extraction.KMeans
@@ -15,17 +14,16 @@ namespace Extraction.KMeans
         private readonly int Seed;
         private const int Threshold = 50;
 
-        public KMeansExtraction(string imageFile, int seed)
+        public KMeansExtraction(byte[] imageByte, int seed)
         {
-            ImageBitmap = !string.IsNullOrWhiteSpace(imageFile) ? GetImageBitmap(imageFile) : throw new NullReferenceException(nameof(imageFile));
+            ImageBitmap = imageByte != null && imageByte.Any() ? GetImageBitmap(imageByte) : throw new NullReferenceException(nameof(imageByte));
             Seed = seed;
         }
 
-        private SKBitmap GetImageBitmap(string imageFile)
+        private SKBitmap GetImageBitmap(byte[] imageByte)
         {
             SKBitmap sKBitmap;
-            using(var imageFileStream = File.OpenRead(imageFile))
-            using(var inputStream = new SKManagedStream(imageFileStream))
+            using(var inputStream = new SKMemoryStream(imageByte))
             {
                 sKBitmap = SKBitmap.Decode(inputStream);
             }

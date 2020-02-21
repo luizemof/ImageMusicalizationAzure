@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Extraction.KMeans;
+using Models.Extraction.KMeans;
+using Models.Functions;
 
 namespace Functions
 {
@@ -19,20 +21,22 @@ namespace Functions
             log.LogInformation("Received message");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
+            var data = JsonConvert.DeserializeObject<ImageMusicalizationModel>(requestBody);
 
             try
             {
-                using (var extraction = new KMeansExtraction(null, 1))
+                KMeansExtractionResult result;
+                var imageByte = Convert.FromBase64String(data.ImageBase64);
+                using (var extraction = new KMeansExtraction(imageByte, data.Seed))
                 {
-                    extraction.Run();
+                    result = extraction.Run();
                 }
 
-                return new OkObjectResult($"Hello");
+                return new OkObjectResult(JsonConvert.SerializeObject(result));
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.Message);
+                return new BadRequestObjectResult(new { message = ex.Message, stackTrace = ex.StackTrace });
             }
         }
     }

@@ -12,12 +12,11 @@ namespace Extraction.Tests.KMeans
         {
             // Given
             var seed = 1;
-            var imageFile = string.Empty;
 
             // When
 
             // Then
-            Assert.Throws(typeof(NullReferenceException), () => new KMeansExtraction(imageFile, seed));
+            Assert.Throws(typeof(NullReferenceException), () => new KMeansExtraction(imageByte: null, seed));
         }
 
         [Test]
@@ -25,10 +24,10 @@ namespace Extraction.Tests.KMeans
         {
             // Given
             var seed = 8;
-            var imageFile = Constants.ImageFile;
+            var imageByte = Convert.FromBase64String(Constants.ImageBase64);
 
             // When
-            var kMeansExtraction = new KMeansExtraction(imageFile, seed);
+            var kMeansExtraction = new KMeansExtraction(imageByte, seed);
             var kMeansExtractionResult = kMeansExtraction.Run();
 
             // Then
