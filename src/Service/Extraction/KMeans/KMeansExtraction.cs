@@ -6,7 +6,7 @@ using Models.Extraction.KMeans;
 using SkiaSharp;
 using System.Drawing;
 
-namespace Extraction.KMeans
+namespace Service.Extraction.KMeans
 {
     public class KMeansExtraction : IDisposable
     {

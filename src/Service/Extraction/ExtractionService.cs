@@ -1,5 +1,5 @@
 using Models.Extraction.KMeans;
-using Extraction.KMeans;
+using Service.Extraction.KMeans;
 using System;
 
 namespace Service.Extraction
