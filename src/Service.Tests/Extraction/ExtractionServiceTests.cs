@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Service.Tests
+namespace Service.Tests.Extraction
 {
     public class ExtractionServiceTests
     {
@@ -12,10 +12,10 @@ namespace Service.Tests
             // Given
             var seed = 7;
             var imageBase64 = Constants.ImageBase64;
-            var kMeansService = ServiceFactory.CreateKMeansService();
+            var extractionService = ServiceFactory.CreateExtractionService();
             
             // When 
-            var kMeansExtractionResult = kMeansService.KMeansExtraction(imageBase64, seed);
+            var kMeansExtractionResult = extractionService.KMeansExtraction(imageBase64, seed);
 
             // Then
             Assert.IsNotNull(kMeansExtractionResult);
@@ -29,7 +29,7 @@ namespace Service.Tests
             // Given
             var seed = 8;
             var imageBase64 = Constants.ImageBase64;
-            var kMeansService = ServiceFactory.CreateKMeansService();
+            var kMeansService = ServiceFactory.CreateExtractionService();
             
             // When 
             var kMeansExtractionResult = kMeansService.KMeansExtraction(imageBase64, seed);

@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Service.Extraction.KMeans
 {
-    public class KMeansExtraction : IDisposable
+    internal class KMeansExtraction : IDisposable
     {
         private readonly SKBitmap ImageBitmap;
         private readonly int Seed;

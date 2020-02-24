@@ -4,7 +4,7 @@ namespace Service
 {
     public static class ServiceFactory
     {
-        public static IExtractionService CreateKMeansService()
+        public static IExtractionService CreateExtractionService()
         {
             return new ExtractionService(); 
         }

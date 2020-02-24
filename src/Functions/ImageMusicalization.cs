@@ -24,10 +24,10 @@ namespace Functions
 
             try
             {
-                var KMeansService = ServiceFactory.CreateKMeansService();
-                var result = KMeansService.KMeansExtraction(data.ImageBase64, data.Seed);
+                var extractionService = ServiceFactory.CreateExtractionService();
+                var kMeansExtractionResult = extractionService.KMeansExtraction(data.ImageBase64, data.Seed);
 
-                return new OkObjectResult(JsonConvert.SerializeObject(result));
+                return new OkObjectResult(JsonConvert.SerializeObject(kMeansExtractionResult));
             }
             catch (Exception ex)
             {
