@@ -7,9 +7,9 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Extraction.KMeans;
 using Models.Extraction.KMeans;
 using Models.Functions;
+using Service;
 
 namespace Functions
 {
@@ -25,12 +25,8 @@ namespace Functions
 
             try
             {
-                KMeansExtractionResult result;
-                var imageByte = Convert.FromBase64String(data.ImageBase64);
-                using (var extraction = new KMeansExtraction(imageByte, data.Seed))
-                {
-                    result = extraction.Run();
-                }
+                var KMeansService = ServiceFactory.CreateKMeansService();
+                var result = KMeansService.KMeansExtraction(data.ImageBase64, data.Seed);
 
                 return new OkObjectResult(JsonConvert.SerializeObject(result));
             }
