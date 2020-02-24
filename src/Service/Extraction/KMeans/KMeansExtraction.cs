@@ -5,41 +5,30 @@ using System.Threading.Tasks;
 using Models.Extraction.KMeans;
 using SkiaSharp;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Service.Tests")]
 namespace Service.Extraction.KMeans
 {
     internal class KMeansExtraction : IDisposable
     {
         private readonly SKBitmap ImageBitmap;
-        private readonly int Seed;
         private const int Threshold = 50;
 
-        public KMeansExtraction(byte[] imageByte, int seed)
+        public KMeansExtraction(SKBitmap imageBitmap)
         {
-            ImageBitmap = imageByte != null && imageByte.Any() ? GetImageBitmap(imageByte) : throw new NullReferenceException(nameof(imageByte));
-            Seed = seed;
+            ImageBitmap = imageBitmap ?? throw new NullReferenceException();
         }
 
-        private SKBitmap GetImageBitmap(byte[] imageByte)
+        public KMeansExtractionResult Run(IEnumerable<Point> input)
         {
-            SKBitmap sKBitmap;
-            using(var inputStream = new SKMemoryStream(imageByte))
-            {
-                sKBitmap = SKBitmap.Decode(inputStream);
-            }
-
-            return sKBitmap;
-        }
-
-        public KMeansExtractionResult Run()
-        {
-            var centers = GetCenters();
+            var centers = GetCenters(input);
             return new KMeansExtractionResult(centers);
         }
 
-        private IEnumerable<Point> GetCenters()
+        private IEnumerable<Point> GetCenters(IEnumerable<Point> initialCenter)
         {
-            var centers = GetInitialCenters();
+            var centers = new List<Point>(initialCenter);
             for (int i = 0; i < Threshold; i++)
             {
                 var groups = GetGroups(centers);
@@ -49,7 +38,7 @@ namespace Service.Extraction.KMeans
                     break;
                 }
 
-                centers = newCenters;
+                centers = newCenters.ToList();
             }
 
             return centers;
@@ -136,20 +125,6 @@ namespace Service.Extraction.KMeans
             double distanceB = Convert.ToDouble(pixelA.Blue) - Convert.ToDouble(pixelB.Blue);
 
             return Math.Sqrt(Math.Pow(distanceR, 2) + Math.Pow(distanceG, 2) + Math.Pow(distanceB, 2));
-        }
-
-        private IEnumerable<Point> GetInitialCenters()
-        {
-            var randomPoint = new Random();
-            var points = new HashSet<Point>();
-            while (points.Count < Seed)
-            {
-                int xPoint = randomPoint.Next(ImageBitmap.Width);
-                int yPoint = randomPoint.Next(ImageBitmap.Height);
-                var point = new Point(xPoint, yPoint);
-                points.Add(point);
-            }
-            return points;
         }
 
         public void Dispose()
