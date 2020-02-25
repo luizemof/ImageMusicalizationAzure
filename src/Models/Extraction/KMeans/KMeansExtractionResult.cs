@@ -1,15 +1,17 @@
-using System.Collections.Generic;
 using System.Drawing;
+using SkiaSharp;
 
 namespace Models.Extraction.KMeans
 {
     public class KMeansExtractionResult
     {
-        public IEnumerable<Point> Centers { get; }
+        public Point Coordinator { get; }
+        public SKColor Pixel { get; }
 
-        public KMeansExtractionResult(IEnumerable<Point> centers)
+        public KMeansExtractionResult(Point coordinator, SKColor pixel)
         {
-            Centers = centers;
+            Coordinator = coordinator;
+            Pixel = pixel;
         }
     }
 }

@@ -38,8 +38,8 @@ namespace Service.NoteGeneration
 
         private NoteGenerationResult Generate(NoteGenerationInput input)
         {
-            double minValue = double.MaxValue;
-            ENote closestNote = ENote.Unknow;
+            var minValue = double.MaxValue;
+            var closestNote = ENote.Unknow;
             foreach(var colorNote in ColorNotes)
             {
                 var distance = colorNote.Value.CalculateDistance(input.Pixel);

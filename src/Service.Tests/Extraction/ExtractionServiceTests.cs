@@ -19,25 +19,8 @@ namespace Service.Tests.Extraction
 
             // Then
             Assert.IsNotNull(kMeansExtractionResult);
-            CollectionAssert.IsNotEmpty(kMeansExtractionResult.Centers);
-            Assert.AreEqual(expected: 7, actual: kMeansExtractionResult.Centers.Count());
-        }
-
-        [Test]
-        public void GivenIHaveOneSeed_And_ImageBase64_WhenICallKMeansExtraction_ThenShouldReturnOneCenterInKMeansResult()
-        {
-            // Given
-            var seed = 8;
-            var imageBase64 = Constants.ImageBase64;
-            var kMeansService = ServiceFactory.CreateExtractionService();
-            
-            // When 
-            var kMeansExtractionResult = kMeansService.KMeansExtraction(imageBase64, seed);
-
-            // Then
-            Assert.IsNotNull(kMeansExtractionResult);
-            CollectionAssert.IsNotEmpty(kMeansExtractionResult.Centers);
-            Assert.AreEqual(expected: 8, actual: kMeansExtractionResult.Centers.Count());
+            CollectionAssert.IsNotEmpty(kMeansExtractionResult);
+            Assert.AreEqual(expected: 7, actual: kMeansExtractionResult.Count());
         }
     }
 }

@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using Models.Extraction.KMeans;
 
 namespace Service.Extraction
 {
     public interface IExtractionService
     {
-        KMeansExtractionResult KMeansExtraction(string imageBase64, int seeds);
+        IEnumerable<KMeansExtractionResult> KMeansExtraction(string imageBase64, int seeds);
     }
 }

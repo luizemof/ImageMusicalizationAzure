@@ -4,6 +4,7 @@ using System.Drawing;
 using System;
 using NUnit.Framework;
 using SkiaSharp;
+using System.Linq;
 
 namespace Service.Tests.Extraction.KMeans
 {
@@ -36,12 +37,12 @@ namespace Service.Tests.Extraction.KMeans
             };
 
             // When
-            var kMeansExtractionResult = new KMeansExtraction(image).Run(centers);
+            var kMeansExtractionResults = new KMeansExtraction(image).Run(centers);
 
             // Then
-            Assert.IsNotNull(kMeansExtractionResult);
-            CollectionAssert.IsNotEmpty(kMeansExtractionResult.Centers);
-            CollectionAssert.AreEqual(expectedCenters, kMeansExtractionResult.Centers);
+            Assert.IsNotNull(kMeansExtractionResults);
+            CollectionAssert.IsNotEmpty(kMeansExtractionResults);
+            CollectionAssert.AreEqual(expectedCenters, kMeansExtractionResults.Select(x => x.Coordinator));
         }
 
         private SKBitmap GetImageBitmap(string imageBase64)

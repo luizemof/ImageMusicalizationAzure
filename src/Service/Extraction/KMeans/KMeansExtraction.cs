@@ -20,13 +20,12 @@ namespace Service.Extraction.KMeans
             ImageBitmap = imageBitmap ?? throw new NullReferenceException();
         }
 
-        public KMeansExtractionResult Run(IEnumerable<Point> input)
+        public IEnumerable<KMeansExtractionResult> Run(IEnumerable<Point> input)
         {
-            var centers = GetCenters(input);
-            return new KMeansExtractionResult(centers);
+            return GetCenters(input);
         }
 
-        private IEnumerable<Point> GetCenters(IEnumerable<Point> initialCenter)
+        private IEnumerable<KMeansExtractionResult> GetCenters(IEnumerable<Point> initialCenter)
         {
             var centers = new List<Point>(initialCenter);
             for (int i = 0; i < Threshold; i++)
@@ -41,7 +40,7 @@ namespace Service.Extraction.KMeans
                 centers = newCenters.ToList();
             }
 
-            return centers;
+            return centers.Select( center => new KMeansExtractionResult(center, ImageBitmap.GetPixel(center.X, center.Y)));
         }
 
         private async Task<IEnumerable<Point>> GetCenters(Dictionary<Point, List<Point>> groups)

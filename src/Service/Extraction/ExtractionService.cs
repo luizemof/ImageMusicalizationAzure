@@ -9,9 +9,9 @@ namespace Service.Extraction
 {
     internal class ExtractionService : IExtractionService
     {
-        public KMeansExtractionResult KMeansExtraction(string imageBase64, int seeds)
+        public IEnumerable<KMeansExtractionResult> KMeansExtraction(string imageBase64, int seeds)
         {
-            KMeansExtractionResult kMeansExtractionResult;
+            IEnumerable<KMeansExtractionResult> kMeansExtractionResult;
             var image = GetImageBitmap(imageBase64);
             var centers = GetInitialCenters(seeds, image.Width, image.Height);
             using (var kMeansExtraction = new KMeansExtraction(image))
