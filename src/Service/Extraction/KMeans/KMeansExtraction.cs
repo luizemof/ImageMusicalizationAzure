@@ -69,7 +69,7 @@ namespace Service.Extraction.KMeans
                 foreach (var item in points)
                 {
                     var pixelItem = ImageBitmap.GetPixel(item.X, item.Y);
-                    distance += CalculateDistance(pixelPossibleCenter, pixelItem);
+                    distance += pixelPossibleCenter.CalculateDistance(pixelItem);
                 }
 
                 var avgDistance = distance / totalPoints;
@@ -107,7 +107,7 @@ namespace Service.Extraction.KMeans
             foreach (var center in centers)
             {
                 var pixelCenter = ImageBitmap.GetPixel(center.X, center.Y);
-                var distance = CalculateDistance(pixelCenter, pixel);
+                var distance = pixelCenter.CalculateDistance(pixel);
                 if (distance < closestDistance)
                 {
                     closestPoint = center;
@@ -116,15 +116,6 @@ namespace Service.Extraction.KMeans
             }
 
             return closestPoint;
-        }
-
-        private double CalculateDistance(SKColor pixelA, SKColor pixelB)
-        {
-            double distanceR = Convert.ToDouble(pixelA.Red) - Convert.ToDouble(pixelB.Red);
-            double distanceG = Convert.ToDouble(pixelA.Green) - Convert.ToDouble(pixelB.Green);
-            double distanceB = Convert.ToDouble(pixelA.Blue) - Convert.ToDouble(pixelB.Blue);
-
-            return Math.Sqrt(Math.Pow(distanceR, 2) + Math.Pow(distanceG, 2) + Math.Pow(distanceB, 2));
         }
 
         public void Dispose()
