@@ -1,4 +1,5 @@
 using Service.Extraction;
+using Service.NoteGeneration;
 
 namespace Service
 {
@@ -7,6 +8,12 @@ namespace Service
         public static IExtractionService CreateExtractionService()
         {
             return new ExtractionService(); 
+        }
+
+        public static INoteGenerationService CreateNoteGenerationService()
+        {
+            var extractionService = CreateExtractionService();
+            return new NoteGenerationService(extractionService);
         }
     }
 }

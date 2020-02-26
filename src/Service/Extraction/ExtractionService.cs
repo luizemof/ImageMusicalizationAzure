@@ -11,15 +11,15 @@ namespace Service.Extraction
     {
         public IEnumerable<KMeansExtractionResult> KMeansExtraction(string imageBase64, int seeds)
         {
-            IEnumerable<KMeansExtractionResult> kMeansExtractionResult;
+            IEnumerable<KMeansExtractionResult> kMeansExtractionResults;
             var image = GetImageBitmap(imageBase64);
             var centers = GetInitialCenters(seeds, image.Width, image.Height);
             using (var kMeansExtraction = new KMeansExtraction(image))
             {
-                kMeansExtractionResult = kMeansExtraction.Run(centers);
+                kMeansExtractionResults = kMeansExtraction.Run(centers);
             }
 
-            return kMeansExtractionResult;
+            return kMeansExtractionResults;
         }
         private SKBitmap GetImageBitmap(string imageBase64)
         {

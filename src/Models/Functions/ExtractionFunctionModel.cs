@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Models.Functions
 {
-    public class ImageMusicalizationModel
+    public class ExtractionFunctionModel
     {
         [JsonProperty("imageBase64")]
         public string ImageBase64 { get; set; }

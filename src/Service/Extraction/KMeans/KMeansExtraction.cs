@@ -22,7 +22,7 @@ namespace Service.Extraction.KMeans
 
         public IEnumerable<KMeansExtractionResult> Run(IEnumerable<Point> input)
         {
-            return GetCenters(input);
+            return GetCenters(input).ToList();
         }
 
         private IEnumerable<KMeansExtractionResult> GetCenters(IEnumerable<Point> initialCenter)
@@ -32,7 +32,7 @@ namespace Service.Extraction.KMeans
             {
                 var groups = GetGroups(centers);
                 var newCenters = GetCenters(groups).Result;
-                if(centers.All(center => newCenters.Contains(center)))
+                if (centers.All(center => newCenters.Contains(center)))
                 {
                     break;
                 }
@@ -40,7 +40,7 @@ namespace Service.Extraction.KMeans
                 centers = newCenters.ToList();
             }
 
-            return centers.Select( center => new KMeansExtractionResult(center, ImageBitmap.GetPixel(center.X, center.Y)));
+            return centers.Select(center => new KMeansExtractionResult(center, ImageBitmap.GetPixel(center.X, center.Y)));
         }
 
         private async Task<IEnumerable<Point>> GetCenters(Dictionary<Point, List<Point>> groups)
@@ -72,7 +72,7 @@ namespace Service.Extraction.KMeans
                 }
 
                 var avgDistance = distance / totalPoints;
-                if(avgDistance < closestAvgDistance)
+                if (avgDistance < closestAvgDistance)
                 {
                     closestAvgDistance = avgDistance;
                     center = possibleCenter;
