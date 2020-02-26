@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Service.Extraction;
 using System;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Service.Tests.Extraction
             // Given
             var seed = 7;
             var imageBase64 = Constants.ImageBase64;
-            var extractionService = ServiceFactory.CreateExtractionService();
+            var extractionService = new ExtractionService();
             
             // When 
             var kMeansExtractionResult = extractionService.KMeansExtraction(imageBase64, seed);

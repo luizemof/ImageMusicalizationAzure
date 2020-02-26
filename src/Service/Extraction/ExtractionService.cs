@@ -4,7 +4,9 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Service.Tests")]
 namespace Service.Extraction
 {
     internal class ExtractionService : IExtractionService

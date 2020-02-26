@@ -1,5 +1,6 @@
 using Service.Extraction;
 using Service.NoteGeneration;
+using Service.StateMachine;
 
 namespace Service
 {
@@ -14,6 +15,11 @@ namespace Service
         {
             var extractionService = CreateExtractionService();
             return new NoteGenerationService(extractionService);
+        }
+
+        public static IStateMachineService CreateStateMachineService()
+        {
+            return new StateMachineService();
         }
     }
 }
