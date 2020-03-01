@@ -21,7 +21,7 @@ namespace Models.StateMachine
 
         public bool AddLinkedStates(IEnumerable<LinkedStateMachineModel> stateMachineModels)
         {
-            var parentStateMachineModels = stateMachineModels.Where( state => state.ParentId == Id);
+            var parentStateMachineModels = stateMachineModels.Where(state => state.ParentId == Id);
             if (parentStateMachineModels.Any())
             {
                 _LinkedStates.AddRange(parentStateMachineModels);

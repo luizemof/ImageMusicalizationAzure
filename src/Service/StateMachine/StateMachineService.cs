@@ -11,12 +11,15 @@ namespace Service.StateMachine
     {
         public IEnumerable<StateMachineModel> CreateStateMachine(IEnumerable<StateMachinceArgs> args)
         {
-            IEnumerable<StateMachineModel> stateMachineModels = args.Select(arg => CreateStateMachineModels(arg)).ToList();
-            foreach (var state in stateMachineModels)
+            var stateMachineModels = args?.Select(arg => CreateStateMachineModels(arg)).ToList();
+            if (stateMachineModels != null)
             {
-                state.AddLinkedStates(CreateLinkedStateMachineModel(state, stateMachineModels));
+                foreach (var state in stateMachineModels)
+                {
+                    state.AddLinkedStates(CreateLinkedStateMachineModel(state, stateMachineModels));
+                }
             }
-            return stateMachineModels;
+            return stateMachineModels ?? Enumerable.Empty<StateMachineModel>();
         }
 
         private IEnumerable<LinkedStateMachineModel> CreateLinkedStateMachineModel(StateMachineModel currentState, IEnumerable<StateMachineModel> statesToLink)
@@ -24,7 +27,7 @@ namespace Service.StateMachine
             var linkedStates = new List<LinkedStateMachineModel>();
             foreach (var link in statesToLink)
             {
-                if(currentState.Id != link.Id)
+                if (currentState.Id != link.Id)
                 {
                     var parentId = currentState.Id;
                     var linkedStateMachineModel = new LinkedStateMachineModel(parentId, link);

@@ -34,5 +34,19 @@ namespace Service.Tests.StateMachine
             Assert.AreEqual(expected: 8, actual: result.Count());
             Assert.IsTrue(result.All(r => r.LinkedStates.Count() == 7));
         }
+        
+        [Test]
+        public void GivenTheArgsIsNull_WhenICallCreateStateMachine_ThenShouldReturnEmpty()
+        {
+            // Given
+            StateMachinceArgs[] args = null;
+
+            // When
+            var stateMachineService = new StateMachineService();
+            var result = stateMachineService.CreateStateMachine(args);
+
+            // Then
+            CollectionAssert.IsEmpty(result);
+        }
     } 
 }
