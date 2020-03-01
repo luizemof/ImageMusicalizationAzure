@@ -12,14 +12,14 @@ using Service;
 
 namespace Functions
 {
-    public static class NoteGenerationService
+    public static class NoteGenerationFunction
     {
-        [FunctionName("NoteGenerationService")]
+        [FunctionName("NoteGenerationFunction")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("Message received in NoteGenerationService");
+            log.LogInformation("Message received in NoteGenerationFunction");
 
             try
             {
