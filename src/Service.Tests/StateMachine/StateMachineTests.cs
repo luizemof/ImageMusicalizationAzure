@@ -32,6 +32,7 @@ namespace Service.Tests.StateMachine
             Assert.IsNotNull(result);
             CollectionAssert.IsNotEmpty(result);
             Assert.AreEqual(expected: 8, actual: result.Count());
+            Assert.IsTrue(result.All(r => r.LinkedStates.Count() == 7));
         }
     } 
 }
