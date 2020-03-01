@@ -14,14 +14,14 @@ namespace Service.Tests.StateMachine
             // Given
             var args = new[]
             { 
-                new StateMachinceArgs(ENote.C, SKColors.Black),
-                new StateMachinceArgs(ENote.D, SKColors.Red),
-                new StateMachinceArgs(ENote.E, SKColors.Green),
-                new StateMachinceArgs(ENote.F, SKColors.Blue),
-                new StateMachinceArgs(ENote.G, SKColors.Yellow),
-                new StateMachinceArgs(ENote.A, SKColors.Magenta),
-                new StateMachinceArgs(ENote.B, SKColors.Cyan),
-                new StateMachinceArgs(ENote.C_8, SKColors.White)
+                new StateMachinceArgs(ENote.C, SKColors.Black, 1000),
+                new StateMachinceArgs(ENote.D, SKColors.Red, 1000),
+                new StateMachinceArgs(ENote.E, SKColors.Green, 1000),
+                new StateMachinceArgs(ENote.F, SKColors.Blue, 1000),
+                new StateMachinceArgs(ENote.G, SKColors.Yellow, 1000),
+                new StateMachinceArgs(ENote.A, SKColors.Magenta, 1000),
+                new StateMachinceArgs(ENote.B, SKColors.Cyan, 1000),
+                new StateMachinceArgs(ENote.C_8, SKColors.White, 1000)
             };
 
             // When

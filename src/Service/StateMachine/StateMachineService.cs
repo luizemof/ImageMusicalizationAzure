@@ -26,9 +26,8 @@ namespace Service.StateMachine
             {
                 if(currentState.Id != link.Id)
                 {
-                    var probability = 0;
                     var parentId = currentState.Id;
-                    var linkedStateMachineModel = new LinkedStateMachineModel(parentId, link, probability);
+                    var linkedStateMachineModel = new LinkedStateMachineModel(parentId, link);
                     linkedStates.Add(linkedStateMachineModel);
                 }
             }
@@ -38,7 +37,7 @@ namespace Service.StateMachine
 
         private StateMachineModel CreateStateMachineModels(StateMachinceArgs arg)
         {
-            var element = new StateElementModel(arg.Note, arg.Pixel);
+            var element = new StateElementModel(arg.Note, arg.Pixel, arg.NumberOfElements);
             return new StateMachineModel(element);
         }
     }

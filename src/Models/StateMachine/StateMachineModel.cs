@@ -15,6 +15,7 @@ namespace Models.StateMachine
         public StateMachineModel(StateElementModel element)
         {
             Id = Guid.NewGuid();
+            StateElement = element;
             _LinkedStates = new List<LinkedStateMachineModel>();
         }
 
