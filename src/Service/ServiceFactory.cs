@@ -1,5 +1,6 @@
 using Service.Extraction;
 using Service.NoteGeneration;
+using Service.SequenceGenerator;
 using Service.StateMachine;
 
 namespace Service
@@ -20,6 +21,11 @@ namespace Service
         public static IStateMachineService CreateStateMachineService()
         {
             return new StateMachineService();
+        }
+
+        public static ISequenceGeneratorService CreateSequenceGeneratorService()
+        {
+            return new SequenceGeneratorService();
         }
     }
 }

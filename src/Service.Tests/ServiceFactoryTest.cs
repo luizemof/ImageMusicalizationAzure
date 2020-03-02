@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Service.Extraction;
 using Service.NoteGeneration;
+using Service.SequenceGenerator;
 using Service.StateMachine;
 
 namespace Service.Tests
@@ -41,6 +42,18 @@ namespace Service.Tests
 
             // Then
             Assert.IsInstanceOf(typeof(IStateMachineService), stateMachineService);
+        }
+
+        [Test]
+        public void GivenIHaveAServiceFactory_WhenICallCreateSequenceGenerator_ThenShouldReturnAnInstanceOfSequenceGenerator()
+        {
+            // Given
+
+            // When
+            var stateMachineService = ServiceFactory.CreateSequenceGeneratorService();
+
+            // Then
+            Assert.IsInstanceOf(typeof(ISequenceGeneratorService), stateMachineService);
         }
     }
 }
