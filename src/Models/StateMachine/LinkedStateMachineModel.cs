@@ -6,7 +6,7 @@ namespace Models.StateMachine
     {
         public Guid ParentId { get; }
         public StateMachineModel NextState { get; }
-        public int Probability { get; set; }
+        public double Probability { get; set; }
 
         public LinkedStateMachineModel(Guid parentId, StateMachineModel nextState)
         {
