@@ -31,7 +31,11 @@ namespace Service
 
         public static IImageMusicalizationService CreateImageMusicalizationService()
         {
-            return new ImageMusicalizationService();
+            INoteGenerationService noteGenerationService = CreateNoteGenerationService();
+            IStateMachineService stateMachineService = CreateStateMachineService();
+            ISequenceGeneratorService sequenceGeneratorService = CreateSequenceGeneratorService();
+
+            return new ImageMusicalizationService(noteGenerationService, stateMachineService, sequenceGeneratorService);
         }
     }
 }
