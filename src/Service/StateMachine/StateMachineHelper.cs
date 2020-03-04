@@ -6,6 +6,14 @@ namespace Service.StateMachine
 {
     public static class StateMachineHelper
     {
+        public static void CalculateAndSetProbability(this StateMachineModel model)
+        {
+            foreach (var linkedState in model.LinkedStates)
+            {
+                linkedState.Probability = CalculateProbability(model, linkedState);
+            }
+        }
+
         public static double CalculateProbability(this StateMachineModel model, LinkedStateMachineModel linkedStateMachineModel)
         {
             var totalOfSetValue = CalculateTotalSetValue(model);

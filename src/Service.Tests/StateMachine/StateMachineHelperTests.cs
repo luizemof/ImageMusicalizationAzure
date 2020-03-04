@@ -12,6 +12,23 @@ namespace Service.Tests.StateMachine
     public class StateMachineHelperTests
     {
         [Test]
+        public void GivenIHaveLinkedStatesIntoStateMachineModel_WhenICallCalculateAndSetProbability_ThenShouldSetCalculateIntoModel()
+        {
+            // Given
+            var stateElementModel = new StateElementModel(ENote.C, SKColors.Black, 1000);
+            var stateMachineModel = new StateMachineModel(stateElementModel);
+            var linkedStates = CreateLinkedStates(stateMachineModel.Id);
+
+            stateMachineModel.AddLinkedStates(linkedStates);
+
+            // When
+            StateMachineHelper.CalculateAndSetProbability(stateMachineModel);
+            
+            // Then
+            Assert.IsTrue(stateMachineModel.LinkedStates.All(ls => ls.Probability > 0));
+        }
+
+        [Test]
         public void GivenIHaveLinkedStates_WhenICallCalculateProbability_ThenSouldReturnTheProbabilityValue()
         {
             // Given

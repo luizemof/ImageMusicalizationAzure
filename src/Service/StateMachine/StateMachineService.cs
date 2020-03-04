@@ -17,6 +17,7 @@ namespace Service.StateMachine
                 foreach (var state in stateMachineModels)
                 {
                     state.AddLinkedStates(CreateLinkedStateMachineModel(state, stateMachineModels));
+                    state.CalculateAndSetProbability();
                 }
             }
             return stateMachineModels ?? Enumerable.Empty<StateMachineModel>();

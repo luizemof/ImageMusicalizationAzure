@@ -33,6 +33,7 @@ namespace Service.Tests.StateMachine
             CollectionAssert.IsNotEmpty(result);
             Assert.AreEqual(expected: 8, actual: result.Count());
             Assert.IsTrue(result.All(r => r.LinkedStates.Count() == 7));
+            Assert.IsTrue(result.All(r => r.LinkedStates.Sum(ls => ls.Probability) < 1 && r.LinkedStates.Sum(ls => ls.Probability) > 0));
         }
         
         [Test]
