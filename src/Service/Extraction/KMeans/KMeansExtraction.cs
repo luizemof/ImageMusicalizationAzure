@@ -6,16 +6,35 @@ using Models.Extraction.KMeans;
 using SkiaSharp;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 [assembly: InternalsVisibleTo("Service.Tests")]
 namespace Service.Extraction.KMeans
 {
     internal class KMeansExtraction : IDisposable
     {
-        private class Center
+        private class Center : IEquatable<Center>
         {
             public Point Coordinate { get; set; }
             public int NumberOfElements { get; set; }
+
+            public bool Equals([AllowNull] Center other)
+            {
+                return 
+                (this == null && other == null) 
+                || 
+                (this != null && other != null && this.Coordinate.X == other.Coordinate.X && this.Coordinate.Y == other.Coordinate.Y);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return Equals(obj as Center);
+            }
+
+            public override int GetHashCode()
+            {
+                return Coordinate.GetHashCode();
+            }
         }
 
         private readonly SKBitmap ImageBitmap;
