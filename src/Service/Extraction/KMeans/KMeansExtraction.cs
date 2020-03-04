@@ -12,6 +12,12 @@ namespace Service.Extraction.KMeans
 {
     internal class KMeansExtraction : IDisposable
     {
+        private class Center
+        {
+            public Point Coordinate { get; set; }
+            public int NumberOfElements { get; set; }
+        }
+
         private readonly SKBitmap ImageBitmap;
         private const int Threshold = 50;
 
@@ -27,7 +33,7 @@ namespace Service.Extraction.KMeans
 
         private IEnumerable<KMeansExtractionResult> GetCenters(IEnumerable<Point> initialCenter)
         {
-            var centers = new List<Point>(initialCenter);
+            var centers = initialCenter.Select(c => new Center() { Coordinate = c }).ToList();
             for (int i = 0; i < Threshold; i++)
             {
                 var groups = GetGroups(centers);
@@ -40,12 +46,20 @@ namespace Service.Extraction.KMeans
                 centers = newCenters.ToList();
             }
 
-            return centers.Select(center => new KMeansExtractionResult(center, ImageBitmap.GetPixel(center.X, center.Y)));
+            return centers.Select(center => ConvertToResult(center));
         }
 
-        private async Task<IEnumerable<Point>> GetCenters(Dictionary<Point, List<Point>> groups)
+        private KMeansExtractionResult ConvertToResult(Center center)
         {
-            var getCenterTasks = new List<Task<Point>>();
+            var coordinates = center.Coordinate;
+            var pixel = ImageBitmap.GetPixel(coordinates.X, coordinates.Y);
+            var numberOfElements = center.NumberOfElements;
+            return new KMeansExtractionResult(coordinates, pixel, numberOfElements);
+        }
+
+        private async Task<IEnumerable<Center>> GetCenters(Dictionary<Point, List<Point>> groups)
+        {
+            var getCenterTasks = new List<Task<Center>>();
 
             foreach (var item in groups.Values)
             {
@@ -56,9 +70,9 @@ namespace Service.Extraction.KMeans
             return centers;
         }
 
-        private Point GetNewCenter(IEnumerable<Point> points)
+        private Center GetNewCenter(IEnumerable<Point> points)
         {
-            var center = Point.Empty;
+            var coordinate = Point.Empty;
             var closestAvgDistance = Double.MaxValue;
             var totalPoints = points.Count();
             foreach (var possibleCenter in points)
@@ -75,16 +89,16 @@ namespace Service.Extraction.KMeans
                 if (avgDistance < closestAvgDistance)
                 {
                     closestAvgDistance = avgDistance;
-                    center = possibleCenter;
+                    coordinate = possibleCenter;
                 }
 
             }
-            return center;
+            return new Center() { Coordinate = coordinate, NumberOfElements = points.Count() };
         }
 
-        private Dictionary<Point, List<Point>> GetGroups(IEnumerable<Point> centers)
+        private Dictionary<Point, List<Point>> GetGroups(IEnumerable<Center> centers)
         {
-            var groups = centers.ToDictionary(center => center, (center) => new List<Point>());
+            var groups = centers.ToDictionary(center => center.Coordinate, (center) => new List<Point>());
             for (int x = 0; x < ImageBitmap.Width; x++)
             {
                 for (int y = 0; y < ImageBitmap.Height; y++)
@@ -99,17 +113,18 @@ namespace Service.Extraction.KMeans
             return groups;
         }
 
-        private Point GetClosestCenterPoint(IEnumerable<Point> centers, SKColor pixel)
+        private Point GetClosestCenterPoint(IEnumerable<Center> centers, SKColor pixel)
         {
             Point closestPoint = Point.Empty;
             double closestDistance = double.MaxValue;
             foreach (var center in centers)
             {
-                var pixelCenter = ImageBitmap.GetPixel(center.X, center.Y);
+                var coordinate = center.Coordinate;
+                var pixelCenter = ImageBitmap.GetPixel(coordinate.X, coordinate.Y);
                 var distance = pixelCenter.CalculateDistance(pixel);
                 if (distance < closestDistance)
                 {
-                    closestPoint = center;
+                    closestPoint = coordinate;
                     closestDistance = distance;
                 }
             }

@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Models.NoteGeneration;
 using SkiaSharp;
 
@@ -20,40 +22,27 @@ namespace Service.NoteGeneration
             { ENote.B, SKColor.Parse("00ffff") },
             { ENote.C_8, SKColor.Parse("ffffff") }
         };
-        
-        public IEnumerable<NoteGenerationResult> Generate(IEnumerable<NoteGenerationInput> inputs)
-        {
-            List<NoteGenerationResult> results = new List<NoteGenerationResult>();
-            if(inputs?.Count() > 0)
-            {
-                foreach(var input in inputs)
-                {
-                    var noteGenerationResult = Generate(input);
-                    results.Add(noteGenerationResult);
-                }
-            }
 
-            return results;
+        public Task<KeyValuePair<Guid, ENote>> GenerateAsync(NoteGenerationInput input)
+        {
+            return Task.Run(() => Generate(input));
         }
 
-        private NoteGenerationResult Generate(NoteGenerationInput input)
+        public KeyValuePair<Guid, ENote> Generate(NoteGenerationInput input)
         {
             var minValue = double.MaxValue;
             var closestNote = ENote.Unknow;
-            foreach(var colorNote in ColorNotes)
+            foreach (var colorNote in ColorNotes)
             {
                 var distance = colorNote.Value.CalculateDistance(input.Pixel);
-                if(distance < minValue)
+                if (distance < minValue)
                 {
                     minValue = distance;
                     closestNote = colorNote.Key;
                 }
             }
 
-            return new NoteGenerationResult()
-            {
-                Note = closestNote
-            };
+            return new KeyValuePair<Guid, ENote>(input.Id, closestNote);
         }
     }
 }

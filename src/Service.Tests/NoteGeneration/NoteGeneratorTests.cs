@@ -2,47 +2,41 @@ using System.Linq;
 using Models.NoteGeneration;
 using Service.NoteGeneration;
 using NUnit.Framework;
-using System.Drawing;
 using SkiaSharp;
+using System;
 
 namespace Service.Tests.NoteGeneration
 {
     public class NoteGeneratorTests
     {
-        [Test]
-        public void GivenIHaveCoordinatorAndPixel_WhenIGenerateNotes_TheShouldReturnNotes()
+        private const string BlackHex = "FF000000";
+        private const string IndianRedHex = "FFCD5C5C";
+        private const string ForestGreenHex = "FF228B22";
+        private const string DarkBlue = "FF00008B";
+        private const string YellowGreen = "FF9ACD32";
+        private const string MediumPurple = "FF9370DB";
+        private const string DarkCyan = "FF008B8B";
+        private const string LightGray = "FFD3D3D3";
+
+        [TestCase(BlackHex, ExpectedResult = ENote.C)]
+        [TestCase(IndianRedHex, ExpectedResult = ENote.D)]
+        [TestCase(ForestGreenHex, ExpectedResult = ENote.E)]
+        [TestCase(DarkBlue, ExpectedResult = ENote.F)]
+        [TestCase(YellowGreen, ExpectedResult = ENote.G)]
+        [TestCase(MediumPurple, ExpectedResult = ENote.A)]
+        [TestCase(DarkCyan, ExpectedResult = ENote.B)]
+        [TestCase(LightGray, ExpectedResult = ENote.C_8)]
+        public ENote GivenIHaveCoordinatorAndPixel_WhenIGenerateNotes_TheShouldReturnNotes(string colorHex)
         {
             // Given
-            var expectedResult = new []
-            {
-                new NoteGenerationResult() { Note = ENote.C },
-                new NoteGenerationResult() { Note = ENote.D },
-                new NoteGenerationResult() { Note = ENote.E },
-                new NoteGenerationResult() { Note = ENote.F },
-                new NoteGenerationResult() { Note = ENote.G },
-                new NoteGenerationResult() { Note = ENote.A },
-                new NoteGenerationResult() { Note = ENote.B },
-                new NoteGenerationResult() { Note = ENote.C_8 }
-            };
-
-            var inputs = new []
-            {
-                new NoteGenerationInput(pixel: SKColors.Black ),
-                new NoteGenerationInput(pixel: SKColors.IndianRed ),
-                new NoteGenerationInput(pixel: SKColors.ForestGreen ),
-                new NoteGenerationInput(pixel: SKColors.DarkBlue ),
-                new NoteGenerationInput(pixel: SKColors.YellowGreen ),
-                new NoteGenerationInput(pixel: SKColors.MediumPurple ),
-                new NoteGenerationInput(pixel: SKColors.DarkCyan ),
-                new NoteGenerationInput(pixel: SKColors.LightGray ),
-            };
+            var inputs = new NoteGenerationInput(id: Guid.NewGuid(), pixel: SKColor.Parse(colorHex));
 
             // When
             var noteGenerationResult = new NoteGenerator().Generate(inputs);
 
             // Then
             Assert.IsNotNull(noteGenerationResult);
-            CollectionAssert.AreEqual(expectedResult.ToList(), noteGenerationResult.ToList());
+            return noteGenerationResult.Value;
         }
     }
 }

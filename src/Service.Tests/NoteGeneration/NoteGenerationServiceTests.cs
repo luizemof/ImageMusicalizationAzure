@@ -18,7 +18,7 @@ namespace Service.Tests.NoteGeneration
             var extractionService = new Mock<IExtractionService>();
             extractionService
                 .Setup(service => service.KMeansExtraction(It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(new[] { new KMeansExtractionResult(coordinator: new Point(), SKColors.Black) });
+                .Returns(new[] { new KMeansExtractionResult(coordinator: new Point(), SKColors.Black, numberOfElements: 100) });
 
             // When
             var noteGenerationService = new NoteGenerationService(extractionService.Object);
