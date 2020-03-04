@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Service.Extraction;
+using Service.ImageMusicalization;
 using Service.NoteGeneration;
 using Service.SequenceGenerator;
 using Service.StateMachine;
@@ -54,6 +55,18 @@ namespace Service.Tests
 
             // Then
             Assert.IsInstanceOf(typeof(ISequenceGeneratorService), stateMachineService);
+        }
+
+        [Test]
+        public void GivenIHaveAServiceFactory_WhenICAllCreateImageMusicalizationService_ThenShouldReturnAnInstanceOfImageMusicalization()
+        {
+            // Given
+
+            // When
+            var imageMusicalizationService = ServiceFactory.CreateImageMusicalizationService();
+
+            // Then
+            Assert.IsInstanceOf(typeof(IImageMusicalizationService), imageMusicalizationService);
         }
     }
 }

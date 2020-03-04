@@ -1,4 +1,5 @@
 using Service.Extraction;
+using Service.ImageMusicalization;
 using Service.NoteGeneration;
 using Service.SequenceGenerator;
 using Service.StateMachine;
@@ -26,6 +27,11 @@ namespace Service
         public static ISequenceGeneratorService CreateSequenceGeneratorService()
         {
             return new SequenceGeneratorService();
+        }
+
+        public static IImageMusicalizationService CreateImageMusicalizationService()
+        {
+            return new ImageMusicalizationService();
         }
     }
 }
