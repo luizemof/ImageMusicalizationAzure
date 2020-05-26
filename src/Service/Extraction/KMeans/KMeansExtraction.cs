@@ -56,7 +56,7 @@ namespace Service.Extraction.KMeans
             for (int i = 0; i < Threshold; i++)
             {
                 var groups = GetGroups(centers);
-                var newCenters = GetCenters(groups).Result;
+                var newCenters = GetCenters(groups).GetAwaiter().GetResult();
                 if (centers.All(center => newCenters.Contains(center)))
                 {
                     break;
@@ -112,7 +112,7 @@ namespace Service.Extraction.KMeans
                 }
 
             }
-            return new Center() { Coordinate = coordinate, NumberOfElements = points.Count() };
+            return new Center() { Coordinate = coordinate, NumberOfElements = totalPoints };
         }
 
         private Dictionary<Point, List<Point>> GetGroups(IEnumerable<Center> centers)
